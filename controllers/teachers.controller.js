@@ -14,6 +14,7 @@ export const getAllTeachersController = async (req, res) => {
     }
 };
 
+
 export const getTeacherByIdController = async (req, res) => {
     try {
         const { id } = req.params;
@@ -40,12 +41,7 @@ export const createTeacherController = async (req, res) => {
         const { name, house_id} = req.body;
         const newTeacher = await teachersRepo.createTeacher(name, house_id);
         
-        if (existingTeacher) {
-            return res.status(400).json({
-                error: "Teacher already exists"
-            });
-        }
-        res.status(200).json(newTeacher);
+        res.status(201).json(newTeacher);
 
     } catch (error) {
         console.error(error);
@@ -54,3 +50,49 @@ export const createTeacherController = async (req, res) => {
         });
     }
 };
+
+export const updateTeacherController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, house_id } = req.body;
+        const existingTeacher = await teachersRepo.getTeacherById(id);
+
+        if (!existingTeacher) {
+            return res.status(404).json({
+                error: "Teacher not found"
+            });
+        }
+
+        const updatedTeacher = await teachersRepo.updateTeacher(id, name, house_id);
+
+        res.status(200).json(updatedTeacher);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: "Internal Server Error"
+        });
+    }
+};
+
+export const deleteTeacherController = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const existingTeacher = await teachersRepo.getTeacherById(id);
+
+        if (!existingTeacher) {
+            return res.status(404).json({
+                error: "Teacher not found"
+            });
+        }
+
+        await teachersRepo.deleteTeacher(id);
+        res.status(204).send();
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: "Internal Server Error"
+        });
+    }
+}
