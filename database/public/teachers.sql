@@ -10,3 +10,8 @@ create table teachers
 alter table teachers
     owner to postgres;
 
+INSERT INTO teachers (name, house_id)
+VALUES ('Minerva McGonagall', 1),
+('Severus Snape', 2),
+('Filius Flitwick', 3),
+('Pomona Sprout', 4);

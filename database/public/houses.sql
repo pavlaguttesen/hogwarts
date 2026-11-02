@@ -10,3 +10,8 @@ create table houses
 alter table houses
     owner to postgres;
 
+INSERT INTO houses(name, colors, founder)
+VALUES ('Gryffindor', 'Scarlet and Gold', 'Godric Gryffindor'),
+('Slytherin', 'Green and Silver', 'Salazar Slytherin'),
+('Ravenclaw', 'Blue and Bronze', 'Rowena Ravenclaw'),
+('Hufflepuff', 'Yellow and Black', 'Helga Hufflepuff');

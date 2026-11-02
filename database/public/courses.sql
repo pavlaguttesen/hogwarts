@@ -10,3 +10,8 @@ create table courses
 alter table courses
     owner to postgres;
 
+INSERT INTO courses (name, teacher_id)
+VALUES ('Potions', 2), 
+('Transfiguration', 1),
+('Charms', 3),
+('Herbology', 4);
