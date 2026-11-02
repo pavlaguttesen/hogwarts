@@ -4,6 +4,7 @@ Dette projekt er en REST API til administration af Hogwarts huse, undervisere, e
 
 API'et er udviklet med Node.js, Express og PostgreSQL. Dette gør det muligt for at hente, oprette, opdatere og slette data gennem forskellige endpoints
 
+
 # Teknologier
 
 - Node.js
@@ -12,7 +13,8 @@ API'et er udviklet med Node.js, Express og PostgreSQL. Dette gør det muligt for
 - pg (Node PostSQL Library)
 - dotenv
 
-# Installation og opstart
+
+## Installation og opstart
 1. Klon projektet fra Github
 [https://github.com/pavlaguttesen/hogwarts.git]
 
@@ -27,16 +29,17 @@ API'et er udviklet med Node.js, Express og PostgreSQL. Dette gør det muligt for
 
 Serveren kører på `https://localhost:3000`
 
-# API endpoints
 
-## Houses
+## API endpoints
+
+### Houses
 
 | Metode | Router | Beskrivelse |
 | ------ | ------ | ----------- |
 | `GET`  | /houses | Henter alle huse |
 | `GET`  | /houses/:id | Henter ét hus |
 
-## Teachers
+### Teachers
 
 | Metode | Router | Beskrivelse |
 | ------ | ------ | ----------- |
@@ -46,7 +49,7 @@ Serveren kører på `https://localhost:3000`
 | `PUT` | /teachers/:id | Opdaterer en underviser |
 | `DELETE` | /teachers/:id | Sletter en underviser | 
 
-## Students 
+### Students 
 
 | Metode | Router | Beskrivelse |
 | ------ | ------ | ----------- |
@@ -56,7 +59,7 @@ Serveren kører på `https://localhost:3000`
 | `PUT` | /students/:id | Opdaterer en elev |
 | `DELETE` | /students/:id | Sletter en elev | 
 
-## Courses
+### Courses
 
 | Metode | Router | Beskrivelse |
 | ------ | ------ | ----------- |
@@ -69,7 +72,8 @@ Serveren kører på `https://localhost:3000`
 | `DELETE` | /courses/:id/student | Sletter en elev fra et fag | 
 | `DELETE` | /courses/:id | Sletter et fag | 
 
-# database
+
+## database
 
 Projektet bruger PostSQL og består af fem tabeller:
 
@@ -83,7 +87,8 @@ Der bruges `foreign keys` til at forbinde undervisere og elever til deres huse s
 
 Tabellen `course_student` bruges til relationer mellem elever og fag, hvor de begge to kan have flere relationer.
 
-# Test af API
+
+## Test af API
 
 API'et kan testes med Insomnia.
 
@@ -95,7 +100,8 @@ oversigten.
 
 Ved POST og PUT sendes data som JSON i request body.
 
-# Projektstruktur
+
+## Projektstruktur
 
 Projektet er opdelt i mapper og filer:
 
