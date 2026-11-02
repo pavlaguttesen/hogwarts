@@ -1,17 +1,17 @@
 # Hogwarts Course Management System
----
+
 Dette projekt er en REST API til administration af Hogwarts huse, undervisere, elever og kurser
 
 API'et er udviklet med Node.js, Express og PostgreSQL. Dette gør det muligt for at hente, oprette, opdatere og slette data gennem forskellige endpoints
----
+
 # Teknologier
----
+
 - Node.js
 - Express
 - PostgreSQL
 - pg (Node PostSQL Library)
 - dotenv
---- 
+
 # Installation og opstart
 1. Klon projektet fra Github
 [https://github.com/pavlaguttesen/hogwarts.git]
