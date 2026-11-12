@@ -1,99 +1,69 @@
-import * as studentsRepo from "../repos/students.repo.js";
-
+import * as studentsRepository from "../repositories/students.repository.js";
+import HTTPError from "../errorhandling/HTTPError.js";
 
 export const getAllStudentsController = async (req, res) => {
-    try {
-        const getAllStudents = await studentsRepo.getAllStudents();
+  const getAllStudents = await studentsRepository.getAllStudents();
 
-        res.status(200).json(getAllStudents);
+  if (getAllStudents.length === 0) {
+    throw new HTTPError(404, "No students found");
+  }
 
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            error: "Internal Server Error"
-        });
-    }
+  res.status(200).json(getAllStudents);
 };
 
-
 export const getStudentByIdController = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const student = await studentsRepo.getStudentById(id);
+  const { id } = req.params;
+  const student = await studentsRepository.getStudentById(id);
 
-        if (!student) {
-            return res.status(404).json({
-                error: "Student not found"
-            });
-        }
+  if (!student) {
+    throw new HTTPError(404, "Student not found");
+  }
 
-        res.status(200).json(student);
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            error: "Internal Server Error"
-        });
-    }
+  res.status(200).json(student);
 };
 
 export const createStudentController = async (req, res) => {
-    try {
-        const { name, year, house_id} = req.body;
-        const newStudent = await studentsRepo.createStudent(name, year, house_id);
-        
-        res.status(201).json(newStudent);
+  const { name, year, house_id } = req.body;
+  const newStudent = await studentsRepository.createStudent(
+    name,
+    year,
+    house_id
+  );
 
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            error: "Internal Server Error"
-        });
-    }
+  if (!newStudent) {
+    throw new HTTPError(404, "Student not found");
+  }
+
+  res.status(201).json(newStudent);
 };
 
 export const updateStudentController = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { name, year, house_id } = req.body;
-        const existingStudent = await studentsRepo.getStudentById(id);
+  const { id } = req.params;
+  const { name, year, house_id } = req.body;
+  const existingStudent = await studentsRepository.getStudentById(id);
 
-        if (!existingStudent) {
-            return res.status(404).json({
-                error: "Student not found"
-            });
-        }
+  if (!existingStudent) {
+    throw new HTTPError(404, "Student not found");
+  }
 
-        const updatedStudent = await studentsRepo.updateStudent(id, name, year, house_id);
+  const updatedStudent = await studentsRepository.updateStudent(
+    id,
+    name,
+    year,
+    house_id
+  );
 
-        res.status(200).json(updatedStudent);
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            error: "Internal Server Error"
-        });
-    }
+  res.status(200).json(updatedStudent);
 };
 
 export const deleteStudentController = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const existingStudent = await studentsRepo.getStudentById(id);
+  const { id } = req.params;
+  const existingStudent = await studentsRepository.getStudentById(id);
 
-        if (!existingStudent) {
-            return res.status(404).json({
-                error: "Student not found"
-            });
-        }
+  if (!existingStudent) {
+    throw new HTTPError(404, "Student not found");
+  }
 
-        await teachersRepo.deleteStudent(id);
-        res.status(204).send();
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            error: "Internal Server Error"
-        });
-    }
-}
+  await teachersRepo.deleteStudent(id);
+  res.status(204).send();
+};

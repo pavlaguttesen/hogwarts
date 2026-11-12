@@ -1,177 +1,108 @@
-import * as coursesRepo from "../repos/courses.repo.js";
-import * as studentRepo from "../repos/students.repo.js";
+import * as coursesRepository from "../repositories/courses.repository.js";
+import * as studentRepository from "../repositories/students.repository.js";
+import HTTPError from "../errorhandling/HTTPError.js";
 
 export const getAllCoursesController = async (req, res) => {
-    try {
-        const allCourses = await coursesRepo.getAllCourses();
+  const allCourses = await coursesRepository.getAllCourses();
 
-        res.status(200).json(allCourses);
+  if (allCourses.length === 0) {
+    throw new HTTPError(404, "No courses found");
+  }
 
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            error: "Internal Server Error"
-        });
-    }
+  res.status(200).json(allCourses);
 };
 
-
 export const getCourseByIdController = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const course = await coursesRepo.getCourseById(id);
+  const { id } = req.params;
+  const course = await coursesRepository.getCourseById(id);
 
-        if (!course) {
-            return res.status(404).json({
-                error: "Course not found"
-            });
-        }
+  if (!course) {
+    throw new HTTPError(404, "Course not found");
+  }
 
-        res.status(200).json(course);
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            error: "Internal Server Error"
-        });
-    }
+  res.status(200).json(course);
 };
 
 export const createCourseController = async (req, res) => {
-    try {
-        const { name, teacher_id} = req.body;
-        const newCourse = await coursesRepo.createCourse(name, teacher_id);
-        
-        res.status(201).json(newCourse);
+  const { name, teacher_id } = req.body;
+  const newCourse = await coursesRepository.createCourse(name, teacher_id);
 
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            error: "Internal Server Error"
-        });
-    }
+  res.status(201).json(newCourse);
 };
 
 export const addStudentToCourseController = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { student_id } = req.body;
-        const existingStudent = await studentRepo.getStudentById(student_id);
+  const { id } = req.params;
+  const { student_id } = req.body;
+  const existingStudent = await studentRepository.getStudentById(student_id);
 
-        if (!existingStudent) {
-            return res.status(404).json({
-                error: "Student not found"
-            });
-        }
-        const existingCourse = await coursesRepo.getCourseById(id);
+  if (!existingStudent) {
+    throw new HTTPError(404, "Student not found");
+  }
+  const existingCourse = await coursesRepository.getCourseById(id);
 
-        if (!existingCourse) {
-            return res.status(404).json({
-                error: "Course not found"
-            });
-        }
+  if (!existingCourse) {
+    throw new HTTPError(404, "Course not found");
+  }
 
-        const updatedCourseandStudent = await coursesRepo.addStudentToCourse(id, student_id);
+  const updatedCourseandStudent = await coursesRepository.addStudentToCourse(
+    id,
+    student_id
+  );
 
-        res.status(201).json(updatedCourseandStudent);
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            error: "Internal Server Error"
-        });
-    }
-}
+  res.status(201).json(updatedCourseandStudent);
+};
 
 export const updateCourseController = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { name } = req.body;
-        const existingCourse = await coursesRepo.getCourseById(id);
+  const { id } = req.params;
+  const { name } = req.body;
+  const existingCourse = await coursesRepository.getCourseById(id);
 
-        if (!existingCourse) {
-            return res.status(404).json({
-                error: "Course not found"
-            });
-        }
+  if (!existingCourse) {
+    throw new HTTPError(404, "Course not found");
+  }
 
-        const updatedCourse = await coursesRepo.updateCourse(id, name);
+  const updatedCourse = await coursesRepository.updateCourse(id, name);
 
-        res.status(200).json(updatedCourse);
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            error: "Internal Server Error"
-        });
-    }
+  res.status(200).json(updatedCourse);
 };
 
 export const updateCourseTeacherController = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const {teacher_id } = req.body;
-        const existingCourseTeacher = await coursesRepo.getCourseById(id);
+  const { id } = req.params;
+  const { teacher_id } = req.body;
+  const existingCourseTeacher = await coursesRepository.getCourseById(id);
 
-        if (!existingCourseTeacher) {
-            return res.status(404).json({
-                error: "Course not found"
-            });
-        }
+  if (!existingCourseTeacher) {
+    throw new HTTPError(404, "Course not found");
+  }
 
-        const updatedCourseTeacher = await coursesRepo.updateCourseTeacher(id, teacher_id);
+  const updatedCourseTeacher = await coursesRepository.updateCourseTeacher(
+    id,
+    teacher_id
+  );
 
-        res.status(200).json(updatedCourseTeacher);
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            error: "Internal Server Error"
-        });
-    }
+  res.status(200).json(updatedCourseTeacher);
 };
 
-
 export const deleteCourseController = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const existingCourse = await coursesRepo.getCourseById(id);
+  const { id } = req.params;
+  const existingCourse = await coursesRepository.getCourseById(id);
 
-        if (!existingCourse) {
-            return res.status(404).json({
-                error: "Course not found"
-            });
-        }
+  if (!existingCourse) {
+    throw new HTTPError(404, "Course not found");
+  }
 
-        await coursesRepo.deleteCourse(id);
-        res.status(204).send();
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            error: "Internal Server Error"
-        });
-    }
-}
+  await coursesRepo.deleteCourse(id);
+  res.status(204).send();
+};
 
 export const deleteStudentFromCourseController = async (req, res) => {
-    try {
-        const { id, student_id, course_id } = req.params;
-        const existingCourseStudent = await coursesRepo.getCourseById(id);
+  const { id, student_id, course_id } = req.params;
+  const existingCourseStudent = await coursesRepository.getCourseById(id);
 
-        if (!existingCourseStudent) {
-            return res.status(404).json({
-                error: "Course not found"
-            });
-        }
+  if (!existingCourseStudent) {
+    throw new HTTPError(404, "Course not found");
+  }
 
-        await coursesRepo.deleteStudentFromCourse(course_id, student_id);
-        res.status(204).send();
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            error: "Internal Server Error"
-        });
-    }
+  await coursesRepo.deleteStudentFromCourse(course_id, student_id);
+  res.status(204).send();
 };

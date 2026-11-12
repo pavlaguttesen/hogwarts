@@ -1,36 +1,23 @@
-import * as housesRepo from "../repos/houses.repo.js";
+import * as housesRepository from "../repositories/houses.repository.js";
+import HTTPError from "../errorhandling/HTTPError.js";
 
 export const getAllHousesController = async (req, res) => {
-    try {
-        const allHouses = await housesRepo.getAllHouses();
+  const allHouses = await housesRepository.getAllHouses();
 
-        res.status(200).json(allHouses);
+  if (allHouses.length === 0) {
+    throw new HTTPError(404, "No houses found");
+  }
 
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            error: "Internal Server Error"
-        });
-    }
+  res.status(200).json(allHouses);
 };
 
 export const getHouseByIdController = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const house = await housesRepo.getHouseById(id);
+  const { id } = req.params;
+  const house = await housesRepository.getHouseById(id);
 
-        if (!house) {
-            return res.status(404).json({
-                error: "House not found"
-            });
-        }
+  if (!house) {
+    throw new HTTPError(404, "House not found");
+  }
 
-        res.status(200).json(house);
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            error: "Internal Server Error"
-        });
-    }
+  res.status(200).json(house);
 };

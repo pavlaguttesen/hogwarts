@@ -1,0 +1,18 @@
+info:
+  name: putTeacher
+  type: http
+  seq: 1
+
+http:
+  method: PUT
+  url: http://localhost:3000/teachers/
+  body:
+    type: json
+    data: ""
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
